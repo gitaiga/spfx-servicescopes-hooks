@@ -1,26 +1,8 @@
-## spfx-servicescope-hooks
+# SPFX Service Scopes Hooks
 
-This is where you include your WebPart documentation.
+This fork takes the great example provided by @vman and takes a "full hooks" approach to simplifying the codebase
 
-### Building the code
-
-```bash
-git clone the repo
-npm i
-npm i -g gulp
-gulp
-```
-
-This package produces the following:
-
-* lib/* - intermediate-stage commonjs build artifacts
-* dist/* - the bundled script, along with other resources
-* deploy/* - all resources which should be uploaded to a CDN.
-
-### Build options
-
-gulp clean
-gulp test
-gulp serve
-gulp bundle
-gulp package-solution
+- Replaces Class Components with Functional Components
+- Removes the Higher Order Component in favour to useContext()
+- useEffect() used instead of componentDidMount()
+- useState() used instead this.setState()
