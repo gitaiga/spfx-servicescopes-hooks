@@ -1,8 +1,10 @@
 import { ServiceScope } from '@microsoft/sp-core-library';
-import * as React from 'react';
+import { createContext } from 'react';
 
 export interface AppContextProps {
     serviceScope: ServiceScope;
 }
 
-export const AppContext = React.createContext<AppContextProps>(undefined);
+const AppContext = createContext<AppContextProps>(undefined);
+
+export default AppContext;

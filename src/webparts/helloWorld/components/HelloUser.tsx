@@ -1,49 +1,32 @@
 import * as React from 'react';
-import { ServiceScope } from '@microsoft/sp-core-library';
-import { withServiceScope } from '../common/withServiceScope';
 import { MSGraphClientFactory, MSGraphClient } from '@microsoft/sp-http';
+import { useEffect, useState, useContext } from 'react';
+import AppContext from '../common/AppContext';
 
-interface IHelloUserProps {
-    serviceScope: ServiceScope;
-}
+const HelloUser: React.FunctionComponent = () => {
 
-interface IHelloUserState {
-    Name: string;
-}
+    const [name, setName] = useState('');
+    const { serviceScope } = useContext(AppContext);
 
-class HelloUser extends React.Component<IHelloUserProps, IHelloUserState> {
-
-    private msGraphClientFactory: MSGraphClientFactory;
-
-    constructor(props: IHelloUserProps) {
-        super(props);
-        this.state = { Name: ''};
-        
-        //this.props has the serviceScope property due to the withServiceScope Higher Order Component passing it in.
-        this.msGraphClientFactory = this.props.serviceScope.consume(MSGraphClientFactory.serviceKey);
-    }
-
-    public render(): React.ReactElement<{}> {
-
-        return <div>
-            {this.state.Name &&
-                <span>Hello {this.state.Name}</span>
-            }
-        </div>;
-
-    }
-
-    public componentDidMount() {
-        this.msGraphClientFactory.getClient()
+    useEffect(() => {
+        const msGraphClientFactory = serviceScope.consume(MSGraphClientFactory.serviceKey);
+        msGraphClientFactory.getClient()
             .then((client: MSGraphClient): void => {
                 client
                     .api('/me')
                     .get((error, user: any, rawResponse?: any) => {
-                        this.setState({ Name: user.displayName });
+                        setName(user.displayName);
                     });
             });
-    }
-}
+    }, []);
 
-//This part is key as it wraps the current component with a Higher Order Component allowing the serviceScope to be passed in as a property.
-export default withServiceScope(HelloUser);
+    return (
+        <div>
+            {name &&
+                <span>Hello {name}</span>
+            }
+        </div>
+    );
+};
+
+export default HelloUser;
