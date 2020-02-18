@@ -1,21 +1,57 @@
 import * as React from 'react';
+import { FC } from 'react';
+
 import { IHelloWorldProps } from './IHelloWorldProps';
-import AppContext from '../common/AppContext';
-import HelloUser from "./HelloUser";
+import { useWebPartContext } from '../../../hooks/useWebPartContext';
+import { MSGraphClientFactory } from '@microsoft/sp-http';
 
+const HelloWorld: FC<IHelloWorldProps> = (props) => {
+  const [name, setName] = React.useState('');
+  /*
+  * Use cases:
+  */
 
-const HelloWorld: React.FunctionComponent<IHelloWorldProps> = (props) =>
-  <AppContext.Provider value={{ serviceScope: props.serviceScope }}>
+  // get single property
+  const webPartId = useWebPartContext(context => context.instanceId);
 
+  // or complex object
+  const ctx = useWebPartContext(context => ({
+    webPartId: context.instanceId,
+    loginName: context.pageContext.user.loginName,
+    msGraphClientFactory: context.serviceScope.consume(MSGraphClientFactory.serviceKey)
+  }));
+
+  // or just the whole context
+  const wpContext = useWebPartContext();
+
+  // get data using ms graph:
+  React.useEffect(() => {
+    async function process() {
+      const client = await ctx.msGraphClientFactory.getClient();
+      client
+        .api('/me')
+        .get((error, user: any, rawResponse?: any) => {
+          setName(user.displayName);
+        });
+    }
+
+    process();
+  }, []);
+
+  return <div>
     <div>
-
-      {/*HelloUser and any other nested components will have the serviceScope property filled.
-  Even if the components are deeply nested*/}
-
-      <HelloUser />
-
+      Legacy page context: <pre>{JSON.stringify(wpContext.pageContext.legacyPageContext)}</pre>
     </div>
-
-  </AppContext.Provider>;
+    <div>
+      Web Part id: {webPartId}
+    </div>
+    <div>
+      Login name: {ctx.loginName}
+    </div>
+    <div>
+      User name: {name}
+    </div>
+  </div>;
+};
 
 export default HelloWorld;

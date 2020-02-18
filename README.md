@@ -1,8 +1,24 @@
 # SPFX Service Scopes Hooks
 
-This fork takes the great example provided by @vman and takes a "full hooks" approach to simplifying the codebase
+This fork takes the great example provided by @garrytrinder (who forked and added "full hooks" to the great example provided by @vman) and adds `useWebPartContext` React hook to simplify working with SPFx web part properties on any level deep in the React components tree. 
 
-- Replaces Class Components with Functional Components
-- Removes the Higher Order Component in favour to useContext()
-- useEffect() used instead of componentDidMount()
-- useState() used instead this.setState()
+## How to use
+
+1. Change top level React render so that it injects current web part context via [React Context](https://reactjs.org/docs/context.html):
+   ```
+   const element: React.ReactElement = React.createElement(
+      AppContext.Provider,
+      {
+        value: this.context
+      },
+      React.createElement(HelloWorld, { description: this.properties.description })
+    );
+   ``` 
+2. Use `useWebPartContext` hook in any child component (it preserves type checking). Use only subset of properties if you don't need the whole context (good for unit testing):
+   ```
+   const ctx = useWebPartContext(context => ({
+     webPartId: context.instanceId,
+     loginName: context.pageContext.user.loginName,
+     msGraphClientFactory: context.serviceScope.consume(MSGraphClientFactory.serviceKey)
+   }));
+   ```

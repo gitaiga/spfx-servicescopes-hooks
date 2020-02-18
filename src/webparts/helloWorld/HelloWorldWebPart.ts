@@ -4,22 +4,21 @@ import { Version } from '@microsoft/sp-core-library';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
 import HelloWorld from './components/HelloWorld';
-import { IHelloWorldProps } from './components/IHelloWorldProps';
+import AppContext from '../../common/AppContext';
 
 export interface IHelloWorldWebPartProps {
   description: string;
 }
 
-export default class HelloWorldWebPart extends BaseClientSideWebPart <IHelloWorldWebPartProps> {
+export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorldWebPartProps> {
 
   public render(): void {
-    
-    const element: React.ReactElement<IHelloWorldProps> = React.createElement(
-      HelloWorld,
+    const element: React.ReactElement = React.createElement(
+      AppContext.Provider,
       {
-        description: this.properties.description,
-        serviceScope: this.context.serviceScope //Only need to pass in serviceScope once to the top level component
-      }
+        value: this.context
+      },
+      React.createElement(HelloWorld, { description: this.properties.description })
     );
 
     ReactDom.render(element, this.domElement);
