@@ -1,3 +1,6 @@
+
+import * as React from "react";
+
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { useContext } from "react";
 
@@ -13,4 +16,3 @@ const useWebPartContext: UseWebPartContextReturn = (mapContext?: (context: WebPa
 };
 
 export { useWebPartContext };
-

@@ -4,6 +4,7 @@ import { FC } from 'react';
 import { IHelloWorldProps } from './IHelloWorldProps';
 import { useWebPartContext } from '../../../hooks/useWebPartContext';
 import { MSGraphClientFactory } from '@microsoft/sp-http';
+import ClassComponent from "./ClassComponent";
 
 const HelloWorld: FC<IHelloWorldProps> = (props) => {
   const [name, setName] = React.useState('');
@@ -51,6 +52,8 @@ const HelloWorld: FC<IHelloWorldProps> = (props) => {
     <div>
       User name: {name}
     </div>
+    <br />
+    <ClassComponent />
   </div>;
 };
 

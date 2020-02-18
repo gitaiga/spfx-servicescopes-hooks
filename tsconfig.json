@@ -29,7 +29,8 @@
     ]
   },
   "include": [
-    "src/**/*.ts", "src/webparts/helloWorld/HelloWorldWebPart.ts", "src/webparts/helloWorld/components/ClassBasedComponent.tsx"
+    "src/**/*.ts",
+    "src/**/*.tsx"
   ],
   "exclude": [
     "node_modules",
