@@ -1,6 +1,6 @@
 # SPFX Service Scopes Hooks
 
-This fork takes the great example provided by @garrytrinder (who forked and added "full hooks" to the great example provided by @vman) and adds `useWebPartContext` React hook to simplify working with SPFx web part properties on any level deep in the React components tree. 
+This fork takes the great example provided by [@garrytrinder](https://twitter.com/garrytrinder) (who forked and added "full hooks" to the great example provided by [@vrdmn](https://twitter.com/vrdmn)) and adds `useWebPartContext` React hook to simplify working with SPFx web part properties on any level deep in the React components tree. 
 
 ## How to use
 
